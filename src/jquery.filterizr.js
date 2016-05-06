@@ -581,7 +581,8 @@
                 for (i = 0; i < array.length; i++) {
                     posArray.push({
                         left: array[i].fit.x,
-                        top: array[i].fit.y
+                        top: array[i].fit.y,
+						index: i
                     });
                 }
                 containerHeight = packer.root.h;
@@ -594,7 +595,8 @@
                     itemHeight = array[i - 1].outerHeight();
                     posArray.push({
                         left: left,
-                        top: top
+                        top: top,
+						index: i
                     });
                     left += itemWidth;
                     if (containerHeight < itemHeight) containerHeight = itemHeight;
@@ -606,7 +608,8 @@
                     itemHeight = array[i - 1].outerHeight();
                     posArray.push({
                         left: left,
-                        top: top
+                        top: top,
+						index: i
                     });
                     top += itemHeight;
                 }
@@ -623,7 +626,8 @@
                     if (array[i]) nextItemWidth = array[i].width();
                     posArray.push({
                         left: left,
-                        top: top
+                        top: top,
+						index: i
                     });
                     x = left + itemWidth + nextItemWidth;
                     if (x > rowWidth) {
@@ -642,7 +646,8 @@
                 for (i = 1; i <= array.length; i++) {
                     posArray.push({
                         left: left,
-                        top: top
+                        top: top,
+						index: i
                     });
                     if (i % cols === 0) rows++;
                     left += itemWidth;
@@ -677,7 +682,8 @@
                     //Push first point at (left: 0, top: 0)
                     posArray.push({
                         left: left,
-                        top: top
+                        top: top,
+						index: i
                     });
                     //Set left and top properties for next point before next iteration
                     left += itemWidth;
@@ -1003,6 +1009,9 @@
             self.css(filterOutCss);
             //Tag as filteringOut for transitionend event
             self._filteringOut = true;
+			//Update data-index attribute in tag and internal jquery 
+			$(self).attr('data-index', -1);
+			$(self).data('index', -1);
         },
 
         /**
@@ -1022,6 +1031,9 @@
             filterInCss.transform += ' translate3d(' + targetPos.left + 'px,' + targetPos.top + 'px, 0)';
             //Play animation
             self.css(filterInCss);
+			//Update data-index attribute in tag and internal jquery
+			$(self).attr('data-index', targetPos.index);
+			$(self).data('index', targetPos.index);
         }
     };
 
