@@ -368,6 +368,53 @@
             if (!self.options.filterInCss.transform)  self.options.filterInCss.transform  = 'translate3d(0,0,0)';
             if (!self.options.filterOutCss.transform) self.options.filterOutCss.transform = 'translate3d(0,0,0)';
         },
+		
+		/**
+        * Appends a new filtr-item to the dom and updates the filtr-container.
+        * @param { htmlString|jQuery} items - the user-provided filtr-item to append.
+        */
+		appendItems: function(items) {
+			var self = this, 
+				$items = $(items),
+				i = self._mainArray.length,
+				x = 0,
+				y = self.height() - self._mainArray[0].outerHeight(),
+				transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+			
+			$.each($items, function(idx, content) {
+				var item = $(content).extend(FiltrItemProto)._init(idx+i, self);
+				item.css('transform', transform);
+				// append to filtr-container dom
+				self.append(item);
+				// add to main array
+				self._mainArray.push(item);
+				
+				// add to sub arrays
+				// multiple categories scenario
+				if (typeof self._mainArray[i]._category === 'object') {
+					for (var p in self._mainArray[i]._category)
+						self._subArrays[self._mainArray[i]._category[p] - 1].push(self._mainArray[i]);
+				}
+				//Single category
+				else self._subArrays[self._mainArray[i]._category - 1].push(self._mainArray[i]);
+			});
+			
+			self.trigger('filteringStart');
+
+            // if multifiltering is enabled then use it based on current toggles
+            if (self._multifilterModeOn()) {
+                var target = self._makeMultifilterArray();
+                self._handleFiltering(target);
+            }
+            // else use current simple filter
+            else {
+                self.filter(self.options.filter);
+            }
+			
+			// apply search filter on top if activated
+            if (self._isSearchActivated()) self.search(self._typedText);
+			
+		},
 
         /***********************************
         * Private & helper methods

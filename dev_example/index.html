@@ -114,6 +114,12 @@
                 </div>
             </div>
         </div>
+		
+		<!-- Add new item -->
+		<div class="row">
+			<button class="btn btn-default btn-add-1" type="button">Add New Item</button>
+			<button class="btn btn-default btn-add-4" type="button">Add 4 New Items</button>
+		</div>
     </div>
 
     <!-- Include jQuery & Filterizr -->
@@ -125,7 +131,21 @@
     <script type="text/javascript">
         $(function() {
             //Initialize filterizr with default options
-            $('.filtr-container').filterizr();
+            var filterizr = $('.filtr-container').filterizr();
+			var counter = 1;
+			$('.btn-add-1').click(function(){
+				filterizr.filterizr('appendItems', '<div class="col-xs-6 col-sm-4 col-md-3 filtr-item" data-category="2, 4" data-sort="New Item ' + counter + '"><img class="img-responsive" src="http://placehold.it/640x480" alt="new item ' + counter + '"><span class="item-desc">New Item ' + counter + '</span></div>');
+				counter++;
+			});
+			
+			$('.btn-add-4').click(function(){
+				var items = [];
+				for (var i = 0; i < 4; i++) {
+					items.push('<div class="col-xs-6 col-sm-4 col-md-3 filtr-item" data-category="2, 4" data-sort="New Item ' + counter + '"><img class="img-responsive" src="http://placehold.it/640x480" alt="new item ' + counter + '"><span class="item-desc">New Item ' + counter + '</span></div>');
+					counter++;
+				}
+				filterizr.filterizr('appendItems', items);
+			});
         });
     </script>
   </body>
