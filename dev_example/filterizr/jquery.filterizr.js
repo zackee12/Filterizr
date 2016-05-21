@@ -391,12 +391,12 @@
 				
 				// add to sub arrays
 				// multiple categories scenario
-				if (typeof self._mainArray[i]._category === 'object') {
-					for (var p in self._mainArray[i]._category)
-						self._subArrays[self._mainArray[i]._category[p] - 1].push(self._mainArray[i]);
+				if (typeof self._mainArray[idx+i]._category === 'object') {
+					for (var p in self._mainArray[idx+i]._category)
+						self._subArrays[self._mainArray[idx+i]._category[p] - 1].push(self._mainArray[idx+i]);
 				}
 				//Single category
-				else self._subArrays[self._mainArray[i]._category - 1].push(self._mainArray[i]);
+				else self._subArrays[self._mainArray[idx+i]._category - 1].push(self._mainArray[idx+i]);
 			});
 			
 			self.trigger('filteringStart');
